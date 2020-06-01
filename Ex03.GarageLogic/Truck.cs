@@ -8,39 +8,42 @@ namespace Ex03.GarageLogic
 {
     public class Truck : Vehicle
     {
-        private const int c_NumOfWheels = 16;
-        private const float c_MaxFuelCapacity = 120;
-        private readonly float r_CargoCapacity;
+        private const int k_NumOfWheels = 16;
+        private float m_CargoCapacity;
         private bool m_IsDangerous;
 
-        public Truck(string i_Model, string i_LicenseNumber, float i_EnergyLeft, EnergyType i_SourceOfEnergy, Wheel i_Wheel,
-            float i_CargoCapacity, bool i_IsDangerous) : base(i_Model, i_LicenseNumber, i_EnergyLeft, i_SourceOfEnergy)
+        public Truck(string i_Model, string i_LicenseNumber, EnergyType i_SourceOfEnergy, Wheel i_Wheel)
+            : base(i_Model, i_LicenseNumber, i_SourceOfEnergy)
         {
-            r_CargoCapacity = i_CargoCapacity;
-            m_IsDangerous = i_IsDangerous;
-            AddWheels(i_Wheel);
+            AddWheels(i_Wheel, k_NumOfWheels, Wheel.eMaxAirPressure.Truck);
             EnergySetup(i_SourceOfEnergy);
-        }
-
-        public override void AddWheels(Wheel i_Wheel)
-        {
-            int i = 0;
-            while (i < c_NumOfWheels)
-            {
-                this.Wheels.Add(i_Wheel);
-                i++;
-            }
+            m_IsDangerous = false;
         }
 
         public override void EnergySetup(EnergyType i_SourceOfEnergy)
         {
             if (i_SourceOfEnergy is Fuel)
             {
-                i_SourceOfEnergy.MaxEnergyCapacity = c_MaxFuelCapacity;
-                i_SourceOfEnergy.CurrentEnergyCapacity = c_MaxFuelCapacity;
+                i_SourceOfEnergy.MaxEnergyCapacity = (float)Fuel.eMaxFuelCapacity.Truck;
+                i_SourceOfEnergy.CurrentEnergyCapacity = (float)Fuel.eMaxFuelCapacity.Truck;
                 ((Fuel)i_SourceOfEnergy).FuelType = Fuel.eFuelType.Soler;
             }
-            // אחרת לזרוק חריגה
+            else
+            {
+                throw new FormatException("A truck energy type should be only fuel!");
+            }
+        }
+
+        public float CargoCapacity
+        {
+            get { return m_CargoCapacity; }
+            set { m_CargoCapacity = value; }
+        }
+
+        public bool IsDangerous
+        {
+            get { return m_IsDangerous; }
+            set { m_IsDangerous = value; }
         }
     }
 }

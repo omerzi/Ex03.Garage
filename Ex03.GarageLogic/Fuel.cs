@@ -9,13 +9,19 @@ namespace Ex03.GarageLogic
     public class Fuel : EnergyType
     {
         private eFuelType m_FuelType;
-
         public enum eFuelType
         {
             Octan95,
             Octan96,
             Octan98,
             Soler
+        }
+
+        public enum eMaxFuelCapacity
+        {
+            Car = 60,
+            Motorcycle = 7,
+            Truck = 120
         }
 
         public eFuelType FuelType

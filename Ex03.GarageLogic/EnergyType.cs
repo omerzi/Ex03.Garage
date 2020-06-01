@@ -8,9 +8,10 @@ namespace Ex03.GarageLogic
 {
     public abstract class EnergyType
     {
-        private float m_MaxEnergyCapacity;  //כמות מירבית של דלק או גז
-        private float m_CurrentEnergyCapacity;//כמות נוכחית של דלק או גז
+        private float m_MaxEnergyCapacity; 
+        private float m_CurrentEnergyCapacity;
 
+        public enum eEnergyType { Electric = 1 , Fuel};
         public float MaxEnergyCapacity
         {
             get { return m_MaxEnergyCapacity; }
@@ -25,13 +26,14 @@ namespace Ex03.GarageLogic
 
         public void AddEnergy(float i_AmountOfEnergy)
         {
-            if(m_CurrentEnergyCapacity + i_AmountOfEnergy <= m_MaxEnergyCapacity)
+            if (m_CurrentEnergyCapacity + i_AmountOfEnergy <= m_MaxEnergyCapacity)
             {
                 m_CurrentEnergyCapacity += i_AmountOfEnergy;
             }
             else
             {
-                // לזרוק חריגה
+                string msg = string.Format("You tried to fill more than your vehicle maximum capacity!");
+                throw new ValueOutOfRangeException(m_MaxEnergyCapacity, m_CurrentEnergyCapacity, msg);
             }
         }
     }

@@ -10,19 +10,17 @@ namespace Ex03.GarageLogic
     {
         private readonly string m_Manufacturer;
         private float m_CurrentAirPressure;
-        private readonly float m_MaxAirPressure;
+        private float m_MaxAirPressure;
 
         public enum eMaxAirPressure
         {
+            Truck = 28,
             Motorcycle = 30,
             Car = 32,
-            Truck = 28
         }
-        public Wheel(string i_Manufacturer, float i_CurrentAirPressure, float i_MaxAirPressure)
+        public Wheel(string i_Manufacturer)
         {
             m_Manufacturer = i_Manufacturer;
-            CurrentAirPressure = i_CurrentAirPressure;
-            m_MaxAirPressure = i_MaxAirPressure;
         }
 
         public float CurrentAirPressure
@@ -31,15 +29,22 @@ namespace Ex03.GarageLogic
             set { m_CurrentAirPressure = value; }
         }
 
+        public float MaxAirPressure
+        {
+            get { return m_MaxAirPressure; }
+            set { m_MaxAirPressure = value; }
+        }
+
         public void AddPressure(float i_PressureToAdd)
         {
-            if(m_CurrentAirPressure + i_PressureToAdd <= m_MaxAirPressure)
+            if(m_CurrentAirPressure + i_PressureToAdd <= MaxAirPressure)
             {
                 m_CurrentAirPressure += i_PressureToAdd;
             }
             else
             {
-                //החזר שגיאה
+                string msg = string.Format("You can't add more pressure than your maximum!");
+                throw new ValueOutOfRangeException(MaxAirPressure, m_CurrentAirPressure, msg);
             }
         }
     }

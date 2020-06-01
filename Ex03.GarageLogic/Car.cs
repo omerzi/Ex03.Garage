@@ -8,24 +8,21 @@ namespace Ex03.GarageLogic
 {
     public class Car : Vehicle
     {
-        private const int c_NumOfWheels = 4;
-        private const float c_MaxFuelCapacity = 60;
-        private const float c_MaxElectricCapacity = 2.1f;
-        private readonly eNumOfDoors r_NumOfCarDoors;
+        private const int k_NumOfWheels = 4;
+        private const float k_MaxElectricCapacity = 2.1f;
+        private eNumOfDoors m_NumOfCarDoors;
         private eColor m_CarColor;
 
-        public Car(float i_EnergyLeft, string i_LicenseNumber, string i_Model, EnergyType i_SourceOfEnergy, Wheel i_Wheel,
-           eNumOfDoors i_NumOfCarDoors, eColor i_Color) : base(i_Model, i_LicenseNumber, i_EnergyLeft, i_SourceOfEnergy)
+        public Car(string i_Model, string i_LicenseNumber, EnergyType i_SourceOfEnergy, Wheel i_Wheel)
+            : base(i_Model, i_LicenseNumber, i_SourceOfEnergy)
         {
-            r_NumOfCarDoors = i_NumOfCarDoors;
-            m_CarColor = i_Color;
             EnergySetup(i_SourceOfEnergy);
-            AddWheels(i_Wheel);
+            AddWheels(i_Wheel, k_NumOfWheels, Wheel.eMaxAirPressure.Car);
         }
 
         public enum eColor
         {
-            Red,
+            Red = 1,
             White,
             Black,
             Silver
@@ -41,7 +38,8 @@ namespace Ex03.GarageLogic
 
         public eNumOfDoors NumOfDoors
         {
-            get { return r_NumOfCarDoors; }
+            get { return m_NumOfCarDoors; }
+            set { m_NumOfCarDoors = value; }
         }
 
         public eColor Color
@@ -50,28 +48,18 @@ namespace Ex03.GarageLogic
             set { m_CarColor = value; }
         }
 
-        public override void AddWheels(Wheel i_Wheel)
-        {
-            int i = 0;
-            while (i < c_NumOfWheels)
-            {
-                this.Wheels.Add(i_Wheel);
-                i++;
-            }
-        }
-
         public override void EnergySetup(EnergyType i_SourceOfEnergy)
         {
             if (i_SourceOfEnergy is Fuel)
             {
-                i_SourceOfEnergy.MaxEnergyCapacity = c_MaxFuelCapacity;
-                i_SourceOfEnergy.CurrentEnergyCapacity = c_MaxFuelCapacity;
+                i_SourceOfEnergy.MaxEnergyCapacity = (float)Fuel.eMaxFuelCapacity.Car;
+                i_SourceOfEnergy.CurrentEnergyCapacity = (float)Fuel.eMaxFuelCapacity.Car;
                 ((Fuel)i_SourceOfEnergy).FuelType = Fuel.eFuelType.Octan96;
             }
             else
             {
-                i_SourceOfEnergy.MaxEnergyCapacity = c_MaxElectricCapacity;
-                i_SourceOfEnergy.CurrentEnergyCapacity = c_MaxElectricCapacity;
+                i_SourceOfEnergy.MaxEnergyCapacity = k_MaxElectricCapacity;
+                i_SourceOfEnergy.CurrentEnergyCapacity = k_MaxElectricCapacity;
             }
         }
     }
