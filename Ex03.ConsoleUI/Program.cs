@@ -1,4 +1,5 @@
 ﻿using System;
+using Ex03.GarageLogic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Ex03.ConsoleUI
     {
         public static void Main()
         {
-            //Run the Exercise
+            MenuUI garage = new MenuUI();
+            garage.OpenGarage();
         }
     }
 }
