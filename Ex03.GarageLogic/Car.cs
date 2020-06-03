@@ -62,5 +62,15 @@ namespace Ex03.GarageLogic
                 i_SourceOfEnergy.CurrentEnergyCapacity = k_MaxElectricCapacity;
             }
         }
+
+        protected override object InnerDetails()
+        {
+            string carDetails = string.Format(
+@"Car Color: {0},
+Num Of Doors: {1}",
+m_CarColor,
+m_NumOfCarDoors);
+            return carDetails;
+        }
     }
 }

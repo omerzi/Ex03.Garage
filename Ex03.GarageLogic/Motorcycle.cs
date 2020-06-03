@@ -54,5 +54,15 @@ namespace Ex03.GarageLogic
             get { return m_LicenseType; }
             set { m_LicenseType = value; }
         }
+
+        protected override object InnerDetails()
+        {
+            string motorcycleDetails = string.Format(
+@"Engine Capacity: {0},
+License Type: {1}",
+m_EngineCapacity,
+m_LicenseType);
+            return motorcycleDetails;
+        }
     }
 }

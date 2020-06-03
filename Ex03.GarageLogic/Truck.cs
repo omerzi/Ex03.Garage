@@ -45,5 +45,15 @@ namespace Ex03.GarageLogic
             get { return m_IsDangerous; }
             set { m_IsDangerous = value; }
         }
+
+        protected override object InnerDetails()
+        {
+            string truckDetails = string.Format(
+@"Cargo Capacity: {0},
+Is Carrying Dangerous Metrials: {1}",
+m_CargoCapacity,
+m_IsDangerous);
+            return truckDetails;
+        }
     }
 }

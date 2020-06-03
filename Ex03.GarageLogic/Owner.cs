@@ -55,5 +55,19 @@ namespace Ex03.GarageLogic
             get { return m_Vehicle; }
             set { m_Vehicle = value; }
         }
+
+        public string Details()
+        {
+            string ownerDetails = string.Format(
+@"Owner Name: {0},
+Phone Number: {1},
+Vehicle Status In Garage: {2},
+{3}",
+m_OwnerName,
+m_PhoneNumber,
+m_VehicleStatus,
+m_Vehicle.Details());
+            return ownerDetails;
+        }
     }
 }

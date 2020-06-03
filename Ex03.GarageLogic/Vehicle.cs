@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Runtime.Remoting.Messaging;
 
 namespace Ex03.GarageLogic
 {
@@ -8,9 +9,9 @@ namespace Ex03.GarageLogic
     {
         private readonly string r_Model;
         private readonly string r_LicenseNumber;
-        private float m_EnergyLeft; // fuel / gas
+        private float m_EnergyLeft;
         private EnergyType m_Source;
-        private List<Wheel> m_Wheels;
+        private readonly List<Wheel> r_Wheels;
 
         public enum eVehicleType
         {
@@ -25,9 +26,8 @@ namespace Ex03.GarageLogic
         {
             r_Model = i_Model;
             r_LicenseNumber = i_LicenseNumber;
-            m_Wheels = new List<Wheel>();
+            r_Wheels = new List<Wheel>();
             m_Source = i_SourceOfEnergy;
-            m_EnergyLeft = (m_Source.CurrentEnergyCapacity / m_Source.MaxEnergyCapacity) * 100;
         }
 
         public string Model
@@ -42,12 +42,22 @@ namespace Ex03.GarageLogic
 
         public float EnergyLeft
         {
-            get { return (m_Source.CurrentEnergyCapacity / m_Source.MaxEnergyCapacity) * 100; }
+            get { return m_EnergyLeft; }
+        }
+
+        public void SetEnergyLeft()
+        {
+            m_EnergyLeft = (m_Source.CurrentEnergyCapacity / m_Source.MaxEnergyCapacity) * 100;
         }
 
         public List<Wheel> Wheels
         {
-            get { return m_Wheels; }
+            get { return r_Wheels; }
+        }
+
+        public EnergyType EnergyType
+        {
+            get { return m_Source; }
         }
 
         public void AddWheels(Wheel i_Wheel, int i_NumOfWheels, Wheel.eMaxAirPressure i_VehiclePressure)
@@ -56,10 +66,30 @@ namespace Ex03.GarageLogic
             {
                 i_Wheel.MaxAirPressure = (float)i_VehiclePressure;
                 i_Wheel.CurrentAirPressure = (float)i_VehiclePressure;
-                this.m_Wheels.Add(i_Wheel);
+                this.r_Wheels.Add(i_Wheel);
             }
         }
 
         public abstract void EnergySetup(EnergyType i_SourceOfEnergy);
+
+        public string Details()
+        {
+        string vehicleDetails = string.Format(
+@"License Number: {0},
+Model Name: {1},
+{2},
+{3},
+Energy Left in Precentage: {4}%
+{5}",
+r_LicenseNumber,
+r_Model,
+r_Wheels[0].Details(),
+m_Source.Details(),
+EnergyLeft,
+InnerDetails());
+            return vehicleDetails;
+        }
+
+        protected abstract object InnerDetails();
     }
 }

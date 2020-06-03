@@ -47,5 +47,17 @@ namespace Ex03.GarageLogic
                 throw new ValueOutOfRangeException(MaxAirPressure, m_CurrentAirPressure, msg);
             }
         }
+
+        public string Details()
+        {
+            string wheelDetails = string.Format(
+@"Wheel Manufactor name: {0}
+Current Wheels Air Pressure: {1}
+Maximum Wheels Air Pressure: {2}",
+m_Manufacturer,
+m_CurrentAirPressure,
+m_MaxAirPressure);
+            return wheelDetails;
+        }
     }
 }

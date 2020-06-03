@@ -8,34 +8,35 @@ namespace Ex03.GarageLogic
 {
     public class Garage
     {
-        private Dictionary<string, Owner> m_GarageClients = new Dictionary<string, Owner>();
+        private readonly Dictionary<string, Owner> r_GarageClients = new Dictionary<string, Owner>();
 
         public Dictionary<string, Owner> GarageClients
         {
-            get { return m_GarageClients; }
+            get { return r_GarageClients; }
         }
 
         public bool AddCar(Owner i_NewOwner)
         {
             string ownerLicensePlate = i_NewOwner.VehicleLicensePlate;
             bool isAlreadyExists = false;
-            if (m_GarageClients.ContainsKey(ownerLicensePlate))
+            if (r_GarageClients.ContainsKey(ownerLicensePlate))
             {
                 i_NewOwner.VehicleStatus = Owner.eVehicleStatus.InRepair;
                 isAlreadyExists = true;
             }
             else
             {
-                m_GarageClients.Add(ownerLicensePlate, i_NewOwner);
+                r_GarageClients.Add(ownerLicensePlate, i_NewOwner);
             }
 
             return isAlreadyExists;
         }
 
+
         public StringBuilder GetLicencseNumbers(int i_LicenseChoice)
         {
             StringBuilder licenseNumbers = new StringBuilder();
-            foreach (Owner current in m_GarageClients.Values)
+            foreach (Owner current in r_GarageClients.Values)
             {
                 if (i_LicenseChoice == 4)
                 {
@@ -52,25 +53,45 @@ namespace Ex03.GarageLogic
 
         public void ChangeStatus(Owner.eVehicleStatus i_VehicleChoice, string i_LicenseNumber)
         {
-            isInGarage(i_LicenseNumber);
-            m_GarageClients[i_LicenseNumber].VehicleStatus = i_VehicleChoice;
+            r_GarageClients[i_LicenseNumber].VehicleStatus = i_VehicleChoice;
         }
 
         public void MaximizeWheelPressure(string i_LicenseNumber)
         {
-            isInGarage(i_LicenseNumber);
-            foreach (Wheel currentWheel in m_GarageClients[i_LicenseNumber].Vehicle.Wheels)
+            foreach (Wheel currentWheel in r_GarageClients[i_LicenseNumber].Vehicle.Wheels)
             {
                 currentWheel.AddPressure(currentWheel.MaxAirPressure - currentWheel.CurrentAirPressure);
             }
         }
 
-        private void isInGarage(string i_LicensePlate)
+        public void IsFuelMatch(Fuel.eFuelType i_FuelType, string i_LicenseNumber)
         {
-            if (!m_GarageClients.ContainsKey(i_LicensePlate))
+            if(r_GarageClients[i_LicenseNumber].Vehicle.EnergyType is Electric)
+            {
+                throw new ArgumentException("You can't add fuel to an electric car!");
+            }
+            else if(i_FuelType != ((Fuel)r_GarageClients[i_LicenseNumber].Vehicle.EnergyType).FuelType)
+            {
+                throw new ArgumentException("The fuel type you selected doesn't match to the vehicle fuel type!");
+            }
+        }
+
+        public void InGarage(string i_LicensePlate)
+        {
+            if (!r_GarageClients.ContainsKey(i_LicensePlate))
             {
                 throw new ArgumentException("The License Number you entered isn't exist in the garage!");
             }
+        }
+
+        public void AddVehicleEnergy(float i_AmountOfFuel, string i_LicenseNumber)
+        {
+            r_GarageClients[i_LicenseNumber].Vehicle.EnergyType.AddEnergy(i_AmountOfFuel);
+        }
+
+        public string GetVehicleDetails(string licensePlate)
+        {
+            return r_GarageClients[licensePlate].Details();
         }
     }
 }
