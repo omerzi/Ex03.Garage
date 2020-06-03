@@ -31,11 +31,13 @@ namespace Ex03.ConsoleUI
             bool isOwnerExists = m_Garage.AddCar(newOwner);
             if(isOwnerExists)
             {
-                Console.Clear();
-                Console.WriteLine(string.Format(
+                PromptConsoleMsg(string.Format(
                     "{0} vehicle is already exists in the garage! changing vehicle status to : In Repair",
                     newOwner.OwnerName));
-                System.Threading.Thread.Sleep(2000);
+            }
+            else
+            {
+                PromptConsoleMsg("Successfully added your car to the garage!");
             }
         }
 
@@ -65,6 +67,7 @@ Enter selection: ");
                     Enum.GetName(typeof(Owner.eVehicleStatus), licenseChoice));
             }
 
+            Console.Clear();
             Console.WriteLine(msg);
             Console.WriteLine(m_Garage.GetLicencseNumbers(licenseChoice));
             System.Threading.Thread.Sleep(2000);
@@ -73,19 +76,51 @@ Enter selection: ");
         internal void ChangeVehicleStatus()
         {
             string licensePlate = getLicensePlate();
+            m_Garage.InGarage(licensePlate);
             Owner.eVehicleStatus vehicleStatus = getVehicleStatus();
             m_Garage.ChangeStatus(vehicleStatus, licensePlate);
-            Console.WriteLine("Successfully changed vehicle status to {0}", vehicleStatus);
-            System.Threading.Thread.Sleep(2000);
+            PromptConsoleMsg(string.Format("Successfully changed vehicle status to {0}", vehicleStatus));
         }
 
         internal void FillPressureToMax()
         {
             string licenseNumber = getLicensePlate();
+            m_Garage.InGarage(licenseNumber);
             m_Garage.MaximizeWheelPressure(licenseNumber);
-            Console.Clear();
-            Console.WriteLine("The wheels were successfully inflate!");
-            System.Threading.Thread.Sleep(2000);
+            PromptConsoleMsg("The wheels were successfully inflate!");
+        }
+
+        internal void AddFuel()
+        {
+            string licensePlate = getLicensePlate();
+            m_Garage.InGarage(licensePlate);
+            Fuel.eFuelType fuelType= getFuelType();
+            m_Garage.IsFuelMatch(fuelType, licensePlate);
+            Console.Write("Please enter amount of fuel to add: ");
+            float amountOfFuel = getValidFloat();
+            m_Garage.AddVehicleEnergy(amountOfFuel, licensePlate);
+            PromptConsoleMsg("Fuel successfully added!");
+        }
+
+        internal void ShowFullVehicleDetails()
+        {
+            string licensePlate = getLicensePlate();
+            m_Garage.InGarage(licensePlate);
+            PromptConsoleMsg(m_Garage.GetVehicleDetails(licensePlate));
+        }
+
+        private Fuel.eFuelType getFuelType()
+        {
+            string fuelTypeList = string.Format(
+@"Please select the type of fuel to add to your vehicle:
+1. Octan 95
+2. Octan 96
+3. Octan 98
+4. Soler
+Enter selection: ");
+            Console.WriteLine(fuelTypeList);
+            int fuelType = getValidNumber((int)eGarageConstants.FirstOption, (int)eGarageConstants.FourthOption);
+            return (Fuel.eFuelType)fuelType;
         }
 
         private Owner.eVehicleStatus getVehicleStatus()
@@ -354,6 +389,25 @@ Enter selection: ");
             }
 
             return validInput;
+        }
+
+        private float getValidFloat()
+        {
+            bool isValidInput = float.TryParse(Console.ReadLine(), out float validInput);
+            while (!isValidInput)
+            {
+                Console.Write("Your input is invalid, please try again:");
+                isValidInput = float.TryParse(Console.ReadLine(), out validInput);
+            }
+
+            return validInput;
+        }
+
+        internal void PromptConsoleMsg(string i_Msg)
+        {
+            Console.Clear();
+            Console.WriteLine(i_Msg);
+            System.Threading.Thread.Sleep(2000);
         }
     }
 }

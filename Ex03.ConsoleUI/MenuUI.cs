@@ -55,23 +55,17 @@ Enter selection: ");
 
                     goToChoice(selection);
                 }
-                catch (FormatException ex)
+                catch (FormatException)
                 {
-                    Console.Clear();
-                    ex = new FormatException("The value you entered is not a number, please try again!");
-                    Console.WriteLine(ex.Message);
-                    System.Threading.Thread.Sleep(2000);
+                    m_GarageManager.PromptConsoleMsg("The value you entered is not a number, please try again!");
                 }
                 catch (ValueOutOfRangeException ex)
                 {
-                    Console.Clear();
-                    Console.WriteLine(ex.Message);
-                    System.Threading.Thread.Sleep(2000);
+                    m_GarageManager.PromptConsoleMsg(ex.Message);
                 }
                 catch (ArgumentException ex)
                 {
-                    Console.WriteLine(ex.Message);
-                    System.Threading.Thread.Sleep(2000);
+                    m_GarageManager.PromptConsoleMsg(ex.Message);
                 }
             }
              while (selection != (int)eMenuOptions.Exit);
@@ -95,13 +89,13 @@ Enter selection: ");
                     m_GarageManager.FillPressureToMax();
                     break;
                 case ((int)eMenuOptions.AddFuel):
-                    //פונקציה
+                    m_GarageManager.AddFuel();
                     break;
                 case ((int)eMenuOptions.Charge):
-                    //פונקציה
+       //             m_GarageManager.ChargeVehicle();
                     break;
                 case ((int)eMenuOptions.ShowFullVehicleDetails):
-                    //פונקציה
+                    m_GarageManager.ShowFullVehicleDetails();
                     break;
             }
         }
