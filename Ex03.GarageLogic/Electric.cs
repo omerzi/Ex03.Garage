@@ -19,5 +19,6 @@ base.CurrentEnergyCapacity,
 EnergyType.eEnergyType.Electric);
             return electricDetails;
         }
+        
     }
 }

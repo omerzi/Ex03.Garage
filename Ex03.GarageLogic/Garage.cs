@@ -75,6 +75,14 @@ namespace Ex03.GarageLogic
                 throw new ArgumentException("The fuel type you selected doesn't match to the vehicle fuel type!");
             }
         }
+        public void IsElectricMatch(string i_LicenseNumber)
+        {
+            if (r_GarageClients[i_LicenseNumber].Vehicle.EnergyType is Fuel)
+            {
+                throw new ArgumentException("You can't add electric to an gasoline car!");
+            }
+           
+        }
 
         public void InGarage(string i_LicensePlate)
         {

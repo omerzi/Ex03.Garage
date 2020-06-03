@@ -102,6 +102,18 @@ Enter selection: ");
             PromptConsoleMsg("Fuel successfully added!");
         }
 
+        internal void ChargeVehicle()
+        {
+            string licensePlate = getLicensePlate();
+            m_Garage.InGarage(licensePlate);
+            m_Garage.IsElectricMatch(licensePlate);
+            Console.Write("Please enter amount of electric energy to add: ");
+            float amountOfFuel = getValidFloat();
+            m_Garage.AddVehicleEnergy(amountOfFuel, licensePlate);
+            PromptConsoleMsg("Fuel successfully added!");
+
+        }
+
         internal void ShowFullVehicleDetails()
         {
             string licensePlate = getLicensePlate();

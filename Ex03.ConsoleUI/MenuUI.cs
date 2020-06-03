@@ -92,7 +92,7 @@ Enter selection: ");
                     m_GarageManager.AddFuel();
                     break;
                 case ((int)eMenuOptions.Charge):
-       //             m_GarageManager.ChargeVehicle();
+                   m_GarageManager.ChargeVehicle();
                     break;
                 case ((int)eMenuOptions.ShowFullVehicleDetails):
                     m_GarageManager.ShowFullVehicleDetails();
